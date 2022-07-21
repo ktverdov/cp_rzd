@@ -4,6 +4,8 @@ import torch.optim as optim
 def create_optimizer(config, model):
     if config.optimizer.type == "Adam":
         optimizer = optim.Adam(model.parameters(), **config.optimizer.parameters)
+    elif config.optimizer.type == "SGD":
+        optimizer = optim.SGD(model.parameters(), **config.optimizer.parameters)
     else:
         raise ValueError("Error in defining optimizer")
         

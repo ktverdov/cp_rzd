@@ -1,10 +1,4 @@
 import torch
-# import torch.nn as nn
-# import torch.nn.functional as F
-# from torch.nn import Parameter
-# import torchvision
-# import math
-# import timm
 
 import segmentation_models_pytorch as smp
 
@@ -39,4 +33,3 @@ def load_model_weights(model, checkpoint_path):
     print(f"Loaded from checkpoint {checkpoint_path}")
 
     return model
-

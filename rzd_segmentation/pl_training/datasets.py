@@ -67,3 +67,25 @@ class SegmDataset(Dataset):
     
     def get_num_classes(self):
         return self.num_classes
+
+
+class TestDataset(Dataset):
+    def __init__(self, images_dir, augs_config_path):
+        self.images_paths = [os.path.join(images_dir, x) for x in os.listdir(images_dir)]
+        
+        augs_config = load_yaml(augs_config_path)
+        self.augs = load_augs(augs_config)
+
+    def __len__(self):
+        return len(self.images_paths)
+
+    def __getitem__(self, index):
+        image_path = self.images_paths[index]
+        image = cv2.imread(image_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        shape = image.shape
+
+        augmented = self.augs(image=image)
+        image = augmented["image"]
+
+        return image, shape, image_path

@@ -23,13 +23,6 @@ class BaseMetric:
         pass
 
 
-# def iou(pred, mask):
-#     intersection = np.logical_and(pred, mask)
-#     union = np.logical_or(pred, mask)
-#     iou_score = np.sum(intersection) / np.sum(union)
-#     return iou_score
-
-
 class IOUMetric(BaseMetric):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -47,7 +40,6 @@ class IOUMetric(BaseMetric):
                                                     mode='multiclass', 
                                                     num_classes=4)
 
-            # iou_score = smp.metrics.iou_score(tp, fp, fn, tn, reduction="micro")
             iou_score = smp.metrics.iou_score(tp, fp, fn, tn, reduction="macro",
                                 zero_division=1.0)
 

@@ -38,7 +38,7 @@ def train_pl(config, args):
                                              save_top_k=1, 
                                              monitor=config.metric_to_monitor, 
                                              mode="max",
-                                             filename=f"{config.version_name}_fold{args.fold}" + "_{" + f"{config.metric_to_monitor}" + ":.2f}")
+                                             filename=f"{config.version_name}_fold{args.fold}" + "_{" + f"{config.metric_to_monitor}" + ":.3f}")
     
     early_stop_callback = pl.callbacks.EarlyStopping(monitor="val_loss", 
                                                      min_delta=0.001, patience=10, 
@@ -60,9 +60,10 @@ def train_pl(config, args):
         swa_callback = pl.callbacks.StochasticWeightAveraging(swa_epoch_start=10, device="cpu")
         callbacks_list.append(swa_callback)
 
+    precision = config.precision if "precision" in config else 16
     trainer = pl.Trainer(accelerator='gpu', 
                         devices=1,
-                        precision=16,
+                        precision=precision,
                         max_epochs=config.max_epochs,
                         accumulate_grad_batches=config.accumulate_grad_batches, 
                         callbacks=callbacks_list, 

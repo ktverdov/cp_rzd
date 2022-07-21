@@ -24,7 +24,6 @@ class SegmModule(pl.LightningModule):
         self.metrics = create_metrics(self.config)
 
         self.tile_inference = True if "tile_inference" in self.config and self.config.tile_inference else False
-        print(self.tile_inference)
     
     def forward(self, x):
         return self.model(x)
@@ -63,9 +62,11 @@ class SegmModule(pl.LightningModule):
 
     def configure_optimizers(self):
         optimizer = create_optimizer(self.config, self.model)
-        scheduler = create_scheduler(self.config, optimizer)
-        
-        return [optimizer], [{"scheduler": scheduler, "interval": "epoch", "monitor": "val_loss"}]
+        scheduler = create_scheduler(self.config, optimizer, 
+                                        total_steps=self.trainer.estimated_stepping_batches)
+
+        scheduler_interval = "epoch" if "scheduler" not in self.config else self.config.scheduler.interval
+        return [optimizer], [{"scheduler": scheduler, "interval": scheduler_interval, "monitor": "val_loss"}]
         
         
 class SegmDataModule(pl.LightningDataModule):
@@ -76,7 +77,7 @@ class SegmDataModule(pl.LightningDataModule):
 
     def get_num_classes(self):
         return self.datasets["train"].get_num_classes()
-        
+
     def train_dataloader(self):
         return DataLoader(self.datasets["train"], 
                           batch_size=self.config.train_data.batch_size, 
