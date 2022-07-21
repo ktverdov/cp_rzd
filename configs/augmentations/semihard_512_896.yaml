@@ -1,0 +1,129 @@
+- class_name: albumentations.ColorJitter
+  params:
+    brightness: 
+      - 0.8
+      - 1.2
+    contrast: 0.2
+    saturation: 0.0
+    hue: 0.0
+    p: 0.9
+
+- class_name: albumentations.OneOf
+  augs:
+    - class_name: albumentations.ToGray
+      params:
+        p: 1.0
+    - class_name: albumentations.ChannelShuffle
+      params:
+        p: 1.0
+  params:
+    p: 0.1
+    
+- class_name: albumentations.OneOf
+  augs:
+    - class_name: albumentations.Downscale
+      params:
+        p: 0.3
+    - class_name: albumentations.Blur
+      params:
+        blur_limit: 15
+        p: 1.0
+    - class_name: albumentations.ImageCompression
+      params:
+        quality_lower: 50
+        quality_upper: 99
+        p: 1.0
+    - class_name: albumentations.MedianBlur
+      params:
+        blur_limit: 15
+        p: 1.0
+    - class_name: albumentations.MotionBlur
+      params:
+        blur_limit: 15
+        p: 1.0
+  params:
+    p: 0.1
+
+- class_name: albumentations.OneOf
+  augs:
+    - class_name: albumentations.GaussNoise
+      params:
+        var_limit: 
+          - 50.0
+          - 300.0
+        p: 1.0
+    - class_name: albumentations.MultiplicativeNoise
+      params:
+        multiplier: 
+          - 0.8
+          - 1.2
+        elementwise: True
+        p: 0.5
+  params:
+    p: 0.25
+
+- class_name: albumentations.OneOf
+  augs:
+    - class_name: albumentations.RandomFog
+      params:
+        fog_coef_lower: 0.1
+        fog_coef_upper: 0.3
+        alpha_coef: 0.05
+        p: 0.1
+    - class_name: albumentations.RandomRain
+      params:
+        blur_value: 1
+        brightness_coefficient: 1.0
+        rain_type: "drizzle"
+        p: 2.0
+    - class_name: albumentations.RandomSunFlare
+      params:
+        flare_roi: 
+          - 0
+          - 0
+          - 1
+          - 0.2
+        num_flare_circles_lower: 1
+        num_flare_circles_upper: 4
+        p: 0.5
+  params:
+    p: 0.1
+    
+- class_name: albumentations.OneOf
+  augs:
+    - class_name: albumentations.OpticalDistortion
+      params:
+        distort_limit:
+         - -0.5
+         - 0.5
+        shift_limit: 0.05
+        border_mode: 0
+        value: 0
+        mask_value: 0
+        p: 1.0
+    - class_name: albumentations.Perspective
+      params:
+        scale:
+         - 0.05
+         - 0.1
+        p: 1.0
+  params:
+    p: 0.25
+
+- class_name: albumentations.HorizontalFlip
+  params:
+    p: 0.5
+
+- class_name: albumentations.Resize
+  params:
+    height: 512
+    width: 896
+    p: 1.0
+
+- class_name: albumentations.Normalize
+  params:
+    p: 1.0
+
+- class_name: albumentations.pytorch.ToTensorV2
+  params:
+    p: 1.0

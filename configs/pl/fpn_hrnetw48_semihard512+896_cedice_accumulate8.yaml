@@ -1,0 +1,47 @@
+version_name: "fpn_hrnetw48_semihard512+896_cedice_accumulate8"
+
+checkpoint_path: "./training_checkpoints/"
+results_path: "./training_work_dirs/"
+
+accumulate_grad_batches: 8
+max_epochs: 35
+
+train_data:
+    type: SegmDataset
+    info_path: "./data/df_kfold.csv"
+    augs_config_path: "./configs/augmentations/semihard_512_896.yaml"
+    batch_size: 6
+
+val_data:
+    type: SegmDataset
+    info_path: "./data/df_kfold.csv"
+    augs_config_path: "./configs/augmentations/val_512_896.yaml"
+    batch_size: 6
+
+
+model:
+  type: smp
+  arch: fpn
+  parameters:
+    encoder_name: tu-hrnet_w48
+    encoder_weights: "imagenet"
+
+loss:
+  - type: CrossEntropyLoss
+    weight: 0.75
+  - type: DiceLoss
+    weight: 0.25
+    parameters:
+      mode: multiclass
+
+
+optimizer:
+  type: Adam
+  parameters:
+      lr: 0.0003
+      weight_decay: 0.00001
+
+metrics:
+  - iou
+
+metric_to_monitor: iou

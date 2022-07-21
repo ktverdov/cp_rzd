@@ -1,0 +1,13 @@
+- class_name: albumentations.Resize
+  params:
+    height: 512
+    width: 896
+    p: 1.0
+
+- class_name: albumentations.Normalize
+  params:
+    p: 1.0
+
+- class_name: albumentations.pytorch.ToTensorV2
+  params:
+    p: 1.0
