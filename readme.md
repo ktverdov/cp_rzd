@@ -1,4 +1,8 @@
-Данные:
+**Данные:**
+
+[train](https://lodmedia.hb.bizmrg.com/case_files/766370/train_dataset_train.zip "train"), [test](https://lodmedia.hb.bizmrg.com/case_files/766370/test_dataset_test.zip "test")
+
+( ожидаемое положение / можно задать в конфигах ):
 
 ```shell
 ./data/train/images/
@@ -6,7 +10,7 @@
 ./data/test
 ```
 
-Запуск:
+**Запуск:**
 
 ```python
 python3 -m venv rzd_env
@@ -19,3 +23,7 @@ pip install -e .
 ./train_pl.sh
 ./inference_pl.sh
 ```
+
+[Чекпоинты итоговых моделей (Release v-1.0_pl)](https://github.com/ktverdov/cp_rzd/releases/tag/v1.0-pl "Чекпоинты моделей")
+
+Обучалось на: GPU: 2080ti ( CUDA 11.3 )
